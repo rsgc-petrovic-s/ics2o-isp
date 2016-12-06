@@ -27,6 +27,7 @@ class GameScene: SKScene {
         koala.position = CGPoint(x: size.width / 2, y: size.height / 2)
         koala.size = CGSize(width: 90, height: 140)
         addChild(koala)
+        spawnPellet()
         
         
     }
@@ -123,4 +124,24 @@ class GameScene: SKScene {
         monster.run(SKAction.sequence([actionMove, actionMoveDone]))
         
     }
+    
+    
+    //pellet lines of code
+    
+    //spawning a single pellet
+    func spawnPellet (){
+        let pellet = SKSpriteNode(imageNamed: "pellet")
+        
+        let horizontalPosition = CGFloat(arc4random_uniform(UInt32(size.width)))
+        
+        let verticalPosition = CGFloat(arc4random_uniform(UInt32(size.height)))
+        
+        let startingPosition = CGPoint(x: horizontalPosition, y: verticalPosition)
+        pellet.position = startingPosition
+        pellet.size = CGSize(width: 50, height: 50)
+        
+        addChild(pellet)
+        
+    }
+    
 }
