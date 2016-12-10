@@ -28,6 +28,8 @@ class GameScene: SKScene {
         koala.size = CGSize(width: 90, height: 140)
         addChild(koala)
         spawnPellet()
+        spawnBarrier()
+        spawnMonster()
         
         
     }
@@ -76,54 +78,16 @@ class GameScene: SKScene {
         
         //monster lines of code
         //monster lines of code
-        //Tells the game whether there will be gravity
-        physicsWorld.gravity = CGVector.zero
-        //Make this class the physics contact delegate
-        
-        //add monsters every 5 second
-        run(SKAction.repeatForever(
-            SKAction.sequence([
-                SKAction.run(addMonster),
-                SKAction.wait(forDuration: 5)
-                ])
-        ))
     }
-    func random() -> CGFloat {
-        return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
-    }
-    
-    func random(min: CGFloat, max: CGFloat) -> CGFloat {
-        return random() * (max - min) + min
-    }
-    func addMonster() {
-        
-        // Create sprite
-        let monster = SKSpriteNode(imageNamed: "monster")
-        
-        //Set the physics properties on the monster
-        monster.physicsBody = SKPhysicsBody(rectangleOf: monster.size) // 1
-        monster.physicsBody?.isDynamic = true // 2
-        
-        
-        // Determine where to spawn the monster along the Y axis
-        let actualY = random(min: monster.size.height/2, max: size.height - monster.size.height/2)
-        
-        // Position the monster slightly off-screen along the right edge,
-        // and along a random position along the Y axis as calculated above
-        monster.position = CGPoint(x: size.width + monster.size.width/2, y: actualY)
-        
-        // Add the monster to the scene
+    func spawnMonster(){
+        let monster = SKSpriteNode(imageNamed:"monster")
+        monster.setScale(2.7)
+        let startingPosition = CGPoint(x: size.width / 2, y: size.height / 2)
+        monster.position = startingPosition
         addChild(monster)
         
-        // Determine speed of the monster
-        let actualDuration = random(min: CGFloat(5.0), max: CGFloat(5.0))
-        
-        // Create the actions
-        let actionMove = SKAction.move(to: CGPoint(x: -monster.size.width/2, y: actualY), duration: TimeInterval(actualDuration))
-        let actionMoveDone = SKAction.removeFromParent()
-        monster.run(SKAction.sequence([actionMove, actionMoveDone]))
-        
     }
+
     
     
     //pellet lines of code
@@ -131,10 +95,11 @@ class GameScene: SKScene {
     //spawning a single pellet
     func spawnPellet (){
         let pellet = SKSpriteNode(imageNamed: "pellet")
+        //randomize horizontal position of the pellet
+        let horizontalPosition = CGFloat(arc4random_uniform(UInt32(size.width - 256 ))) + 128
         
-        let horizontalPosition = CGFloat(arc4random_uniform(UInt32(size.width)))
-        
-        let verticalPosition = CGFloat(arc4random_uniform(UInt32(size.height)))
+        //randomize veritcal position of the pellet
+        let verticalPosition = CGFloat(arc4random_uniform(UInt32(size.height - 256))) + 128
         
         let startingPosition = CGPoint(x: horizontalPosition, y: verticalPosition)
         pellet.position = startingPosition
@@ -142,6 +107,90 @@ class GameScene: SKScene {
         
         addChild(pellet)
         
+    }
+    
+    
+    
+    //barrier lines of code
+    
+    func spawnBarrier (){
+
+        
+        // Left edge barriers
+        for column in 1...12{
+            let barrier = SKSpriteNode(imageNamed: "barrier")
+            barrier.anchorPoint = CGPoint(x: 0, y: 0)
+            
+            
+            let startingPosition = CGPoint(x: -25, y: 128 * column)
+            
+            barrier.position = startingPosition
+            barrier.size = CGSize(width: 128, height: 128)
+            barrier.setScale(2.0)
+            addChild(barrier)
+            
+        }
+
+        // Left edge barriers
+        for column in 1...12{
+            let barrier = SKSpriteNode(imageNamed: "barrier")
+            barrier.anchorPoint = CGPoint(x: 0, y: 0)
+            
+            
+            let startingPosition = CGPoint(x: -25, y: 128 * column)
+            
+            barrier.position = startingPosition
+            barrier.size = CGSize(width: 128, height: 128)
+            barrier.setScale(2.0)
+            addChild(barrier)
+            
+           
+
+        }
+        // right edge barriers
+        for column in 1...12{
+            let barrier2 = SKSpriteNode(imageNamed: "barrier")
+            barrier2.anchorPoint = CGPoint(x: 0, y: 0)
+            
+            
+            let startingPosition = CGPoint(x: 1890, y: 128 * column)
+            
+            barrier2.position = startingPosition
+            barrier2.size = CGSize(width: 128, height: 128)
+            barrier2.setScale(2.0)
+            addChild(barrier2)
+            
+        }
+        
+        // top  edge barriers
+        for row in 1...17{
+            let barrier3 = SKSpriteNode(imageNamed: "barrier")
+            barrier3.anchorPoint = CGPoint(x: 0, y: 0)
+            
+            
+            let startingPosition = CGPoint(x: 105 * row - 10, y: 1153)
+            
+            barrier3.position = startingPosition
+            barrier3.size = CGSize(width: 128, height: 128)
+            barrier3.setScale(2.0)
+            addChild(barrier3)
+            
+        }
+        
+        // bottom  edge barriers
+        for row in 1...17{
+            let barrier4 = SKSpriteNode(imageNamed: "barrier")
+            barrier4.anchorPoint = CGPoint(x: 0, y: 0)
+            
+            
+            let startingPosition = CGPoint(x: 105 * row - 10, y: 128)
+            
+            barrier4.position = startingPosition
+            barrier4.size = CGSize(width: 128, height: 128)
+            barrier4.setScale(2.0)
+            addChild(barrier4)
+            
+        }
     }
     
 }
